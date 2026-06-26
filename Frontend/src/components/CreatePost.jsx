@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { createPost } from "../services/postService";
 
@@ -10,9 +9,7 @@ const CreatePost = ({ onPostCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!content.trim() && !image) {
-      return;
-    }
+    if (!content.trim() && !image) return;
 
     try {
       setLoading(true);
@@ -24,7 +21,6 @@ const CreatePost = ({ onPostCreated }) => {
 
       setContent("");
       setImage(null);
-
       e.target.reset();
 
       if (onPostCreated) {
@@ -39,33 +35,42 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mb-6 rounded-lg bg-white p-5 shadow"
-    >
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="What's on your mind?"
-        rows={4}
-        className="mb-4 w-full rounded border p-3 outline-none focus:border-blue-500"
-      />
+    <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-md transition-all hover:shadow-lg">
+      <h2 className="mb-5 text-xl font-semibold text-slate-800">
+        Create a Post
+      </h2>
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files[0])}
-        className="mb-4 w-full"
-      />
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <textarea
+          rows={4}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="What's on your mind?"
+          className="w-full resize-none rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200"
+        />
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {loading ? "Posting..." : "Create Post"}
-      </button>
-    </form>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Upload Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+            className="block w-full rounded-xl border border-slate-300 bg-slate-50 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:font-medium file:text-white hover:file:bg-blue-700"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white shadow-md transition-all duration-300 hover:scale-[1.01] hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loading ? "Posting..." : "Create Post"}
+        </button>
+      </form>
+    </div>
   );
 };
 
