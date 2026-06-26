@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -42,8 +41,9 @@ const Profile = () => {
     return (
       <>
         <Navbar />
-        <div className="flex justify-center py-10">
-          <h2 className="text-xl font-semibold">Loading...</h2>
+
+        <div className="flex min-h-screen items-center justify-center bg-slate-100">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
         </div>
       </>
     );
@@ -53,8 +53,11 @@ const Profile = () => {
     return (
       <>
         <Navbar />
-        <div className="flex justify-center py-10">
-          <h2 className="text-xl font-semibold">User not found</h2>
+
+        <div className="flex min-h-screen items-center justify-center bg-slate-100">
+          <h2 className="text-2xl font-semibold text-slate-700">
+            User not found
+          </h2>
         </div>
       </>
     );
@@ -64,60 +67,92 @@ const Profile = () => {
     <>
       <Navbar />
 
-      <div className="mx-auto max-w-3xl px-4 py-6">
-        <div className="mb-6 rounded-lg bg-white p-6 shadow">
-          <div className="flex items-center gap-4">
-            <img
-              src={profile.avatar || "https://placehold.co/100x100"}
-              alt={profile.username}
-              className="h-24 w-24 rounded-full object-cover"
-            />
+      <main className="min-h-screen bg-slate-100">
+        <div className="mx-auto max-w-5xl px-4 py-8">
+          <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
+            <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col items-center gap-5 md:flex-row">
+                <img
+                  src={profile.avatar || "https://placehold.co/150x150"}
+                  alt={profile.username}
+                  className="h-32 w-32 rounded-full border-4 border-blue-100 object-cover shadow"
+                />
 
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold">
-                {profile.username}
-              </h1>
+                <div className="text-center md:text-left">
+                  <h1 className="text-3xl font-bold text-slate-900">
+                    {profile.username}
+                  </h1>
 
-              <p className="text-gray-600">
-                {profile.email}
-              </p>
+                  <p className="mt-2 text-slate-500">
+                    {profile.email}
+                  </p>
 
-              <div className="mt-3 flex gap-6">
-                <span>
-                  <strong>{posts.length}</strong> Posts
-                </span>
+                  <div className="mt-6 flex flex-wrap justify-center gap-4 md:justify-start">
+                    <div className="rounded-xl bg-slate-100 px-5 py-3 text-center">
+                      <p className="text-2xl font-bold text-slate-900">
+                        {posts.length}
+                      </p>
 
-                <span>
-                  <strong>{profile.followers.length}</strong> Followers
-                </span>
+                      <p className="text-sm text-slate-500">
+                        Posts
+                      </p>
+                    </div>
 
-                <span>
-                  <strong>{profile.following.length}</strong> Following
-                </span>
+                    <div className="rounded-xl bg-slate-100 px-5 py-3 text-center">
+                      <p className="text-2xl font-bold text-slate-900">
+                        {profile.followers.length}
+                      </p>
+
+                      <p className="text-sm text-slate-500">
+                        Followers
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl bg-slate-100 px-5 py-3 text-center">
+                      <p className="text-2xl font-bold text-slate-900">
+                        {profile.following.length}
+                      </p>
+
+                      <p className="text-sm text-slate-500">
+                        Following
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <FollowButton
+                profileUser={profile}
+                onFollowChange={fetchProfile}
+              />
             </div>
-
-            <FollowButton
-              profileUser={profile}
-              onFollowChange={fetchProfile}
-            />
           </div>
-        </div>
 
-        {posts.length === 0 ? (
-          <h2 className="text-center text-lg font-semibold">
-            No posts yet.
-          </h2>
-        ) : (
-          posts.map((post) => (
-            <PostCard
-              key={post._id}
-              post={post}
-              onPostDeleted={handlePostDeleted}
-            />
-          ))
-        )}
-      </div>
+          {posts.length === 0 ? (
+            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm">
+              <div className="text-6xl">📷</div>
+
+              <h2 className="mt-4 text-2xl font-semibold text-slate-800">
+                No Posts Yet
+              </h2>
+
+              <p className="mt-2 text-slate-500">
+                This user hasn't shared anything yet.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {posts.map((post) => (
+                <PostCard
+                  key={post._id}
+                  post={post}
+                  onPostDeleted={handlePostDeleted}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
     </>
   );
 };
