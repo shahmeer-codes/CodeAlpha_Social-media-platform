@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
     message: "Social Media API is running..."
   });
 });
-
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
