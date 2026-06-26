@@ -116,3 +116,20 @@ export const deletePost = async (req, res) => {
     });
   }
 };
+export const getUserPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({ user: req.params.id })
+      .populate("user", "username avatar")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      posts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
