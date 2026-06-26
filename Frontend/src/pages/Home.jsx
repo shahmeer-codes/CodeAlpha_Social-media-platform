@@ -35,44 +35,74 @@ const Home = () => {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-slate-100">
-        <div className="mx-auto max-w-5xl px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-              Home Feed
+      <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+        {/* Background Decorations */}
+        <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl" />
+        <div className="absolute top-40 -right-24 h-96 w-96 rounded-full bg-purple-400/20 blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-cyan-300/20 blur-3xl" />
+
+        <div className="relative mx-auto max-w-5xl px-4 py-10">
+
+          {/* Header */}
+          <div className="mb-10 rounded-3xl border border-white/40 bg-white/70 p-8 shadow-xl backdrop-blur-xl">
+            <span className="rounded-full bg-blue-100 px-4 py-1 text-sm font-semibold text-blue-600">
+              Social Platform
+            </span>
+
+            <h1 className="mt-4 text-5xl font-black tracking-tight text-slate-900">
+              Welcome Back 👋
             </h1>
 
-            <p className="mt-2 text-slate-500">
-              Discover and share what's happening.
+            <p className="mt-3 max-w-2xl text-lg leading-relaxed text-slate-600">
+              Stay connected with your friends, share your thoughts,
+              and discover what's happening around you.
             </p>
           </div>
 
-          <CreatePost onPostCreated={handlePostCreated} />
+          {/* Create Post */}
+          <div className="mb-10">
+            <CreatePost onPostCreated={handlePostCreated} />
+          </div>
 
+          {/* Loading */}
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+            <div className="flex flex-col items-center justify-center py-24">
+              <div className="h-14 w-14 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+
+              <p className="mt-6 text-slate-500 animate-pulse">
+                Loading your feed...
+              </p>
             </div>
           ) : posts.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm">
-              <div className="text-6xl">📭</div>
+            <div className="rounded-3xl border border-white/40 bg-white/80 p-16 text-center shadow-xl backdrop-blur-xl">
 
-              <h2 className="mt-4 text-2xl font-semibold text-slate-800">
+              <div className="text-7xl">📭</div>
+
+              <h2 className="mt-6 text-3xl font-bold text-slate-800">
                 No Posts Yet
               </h2>
 
-              <p className="mt-2 text-slate-500">
-                Be the first person to create a post.
+              <p className="mx-auto mt-3 max-w-md text-slate-500">
+                Looks a little quiet here...
+                Be the first to share something with everyone.
               </p>
+
+              <div className="mt-8 inline-flex rounded-full bg-blue-100 px-5 py-2 text-sm font-semibold text-blue-700">
+                Create your first post 🚀
+              </div>
             </div>
           ) : (
             <div className="space-y-8">
               {posts.map((post) => (
-                <PostCard
+                <div
                   key={post._id}
-                  post={post}
-                  onPostDeleted={handlePostDeleted}
-                />
+                  className="transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]"
+                >
+                  <PostCard
+                    post={post}
+                    onPostDeleted={handlePostDeleted}
+                  />
+                </div>
               ))}
             </div>
           )}
