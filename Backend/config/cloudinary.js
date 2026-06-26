@@ -1,4 +1,3 @@
-
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 
@@ -10,10 +9,11 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
+  params: async (req, file) => ({
     folder: "social-media-posts",
     allowed_formats: ["jpg", "jpeg", "png", "webp"],
-  },
+    public_id: `${Date.now()}-${file.originalname.split(".")[0]}`,
+  }),
 });
 
 export { cloudinary, storage };
