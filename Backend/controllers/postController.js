@@ -8,11 +8,14 @@ export const createPost = async (req, res) => {
       user: req.user._id,
       content,
       image: req.file
-        ? {
-            url: req.file.path,
-            publicId: req.file.filename,
-          }
-        : {},
+  ? {
+      url: req.file.path,
+      publicId: req.file.filename,
+    }
+  : {
+      url: "",
+      publicId: "",
+    },
     });
 
     const populatedPost = await Post.findById(post._id)
