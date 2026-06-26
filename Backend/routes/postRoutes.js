@@ -1,13 +1,13 @@
 import express from "express";
+import authMiddleware from "../middleware/authMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
+
 import {
   createPost,
   getPosts,
-  likeUnlikePost,
+  toggleLike,
   deletePost,
 } from "../controllers/postController.js";
-
-import authMiddleware from "../middleware/authMiddleware.js";
-import upload from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.post(
 router.put(
   "/:id/like",
   authMiddleware,
-  likeUnlikePost
+  toggleLike
 );
 
 router.delete(
