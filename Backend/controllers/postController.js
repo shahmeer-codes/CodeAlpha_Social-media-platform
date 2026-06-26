@@ -1,4 +1,3 @@
-
 import Post from "../models/Post.js";
 
 export const createPost = async (req, res) => {
@@ -8,7 +7,12 @@ export const createPost = async (req, res) => {
     const post = await Post.create({
       user: req.user._id,
       content,
-      image: req.file ? req.file.path : "",
+      image: req.file
+        ? {
+            url: req.file.path,
+            publicId: req.file.filename,
+          }
+        : {},
     });
 
     const populatedPost = await Post.findById(post._id)
@@ -16,7 +20,6 @@ export const createPost = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Post created successfully",
       post: populatedPost,
     });
   } catch (error) {
@@ -45,7 +48,7 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const likeUnlikePost = async (req, res) => {
+export const toggleLike = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -56,9 +59,9 @@ export const likeUnlikePost = async (req, res) => {
       });
     }
 
-    const alreadyLiked = post.likes.includes(req.user._id);
+    const liked = post.likes.includes(req.user._id);
 
-    if (alreadyLiked) {
+    if (liked) {
       post.likes.pull(req.user._id);
     } else {
       post.likes.push(req.user._id);
@@ -68,8 +71,8 @@ export const likeUnlikePost = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      liked: !liked,
       likes: post.likes.length,
-      liked: !alreadyLiked,
     });
   } catch (error) {
     res.status(500).json({
