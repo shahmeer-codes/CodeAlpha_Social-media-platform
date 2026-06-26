@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { toggleFollow } from "../services/userService";
@@ -45,17 +44,13 @@ const FollowButton = ({ profileUser, onFollowChange }) => {
     <button
       onClick={handleFollow}
       disabled={loading}
-      className={`rounded px-5 py-2 text-white transition ${
+      className={`rounded-xl px-6 py-3 text-sm font-semibold shadow-md transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 ${
         following
-          ? "bg-gray-600 hover:bg-gray-700"
-          : "bg-blue-600 hover:bg-blue-700"
-      } disabled:opacity-50`}
+          ? "bg-slate-700 text-white hover:bg-slate-800"
+          : "bg-blue-600 text-white hover:bg-blue-700"
+      }`}
     >
-      {loading
-        ? "Loading..."
-        : following
-        ? "Unfollow"
-        : "Follow"}
+      {loading ? "Loading..." : following ? "Following" : "Follow"}
     </button>
   );
 };
