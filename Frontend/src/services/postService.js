@@ -1,8 +1,12 @@
-
 import axiosInstance from "./axiosInstance";
 
 export const getPosts = async () => {
   const { data } = await axiosInstance.get("/posts");
+  return data;
+};
+
+export const getUserPosts = async (userId) => {
+  const { data } = await axiosInstance.get(`/posts/user/${userId}`);
   return data;
 };
 
