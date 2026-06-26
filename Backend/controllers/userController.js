@@ -1,4 +1,3 @@
-
 import User from "../models/User.js";
 
 export const getUserProfile = async (req, res) => {
@@ -27,7 +26,7 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-export const followUser = async (req, res) => {
+export const toggleFollow = async (req, res) => {
   try {
     if (req.user._id.toString() === req.params.id) {
       return res.status(400).json({
@@ -36,62 +35,35 @@ export const followUser = async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.params.id);
     const currentUser = await User.findById(req.user._id);
+    const targetUser = await User.findById(req.params.id);
 
-    if (!user) {
+    if (!targetUser) {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
 
-    if (currentUser.following.includes(user._id)) {
-      return res.status(400).json({
-        success: false,
-        message: "Already following",
-      });
+    const isFollowing = currentUser.following.includes(targetUser._id);
+
+    if (isFollowing) {
+      currentUser.following.pull(targetUser._id);
+      targetUser.followers.pull(currentUser._id);
+    } else {
+      currentUser.following.push(targetUser._id);
+      targetUser.followers.push(currentUser._id);
     }
 
-    currentUser.following.push(user._id);
-    user.followers.push(currentUser._id);
-
     await currentUser.save();
-    await user.save();
+    await targetUser.save();
 
     res.status(200).json({
       success: true,
-      message: "User followed successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-export const unfollowUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    const currentUser = await User.findById(req.user._id);
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    currentUser.following.pull(user._id);
-    user.followers.pull(currentUser._id);
-
-    await currentUser.save();
-    await user.save();
-
-    res.status(200).json({
-      success: true,
-      message: "User unfollowed successfully",
+      following: !isFollowing,
+      message: isFollowing
+        ? "User unfollowed successfully"
+        : "User followed successfully",
     });
   } catch (error) {
     res.status(500).json({
