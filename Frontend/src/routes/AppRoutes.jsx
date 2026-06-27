@@ -6,10 +6,6 @@ import Home from "../pages/Home";
 import Profile from "../pages/Profile";
 import About from "../pages/About";
 import Settings from "../pages/Settings";
-import Explore from "../pages/Explore";
-import Friends from "../pages/Friends";
-import Messages from "../pages/Messages";
-import Notifications from "../pages/Notifications";
 import CreatePost from "../pages/CreatePost";
 
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -49,10 +45,7 @@ const AppRoutes = () => {
         }
       >
         <Route path="/" element={<Home />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/friends" element={<Friends />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/notifications" element={<Notifications />} />
+      
         <Route path="/create" element={<CreatePost />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/about" element={<About />} />

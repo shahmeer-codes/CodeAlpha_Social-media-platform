@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toggleLike, deletePost } from "../services/postService";
 import CommentSection from "./CommentSection";
-import { Heart, MessageCircle, Share, Bookmark, MoreHorizontal, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, MoreHorizontal, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "./Sidebar";
 
@@ -44,7 +44,6 @@ const PostCard = ({ post, onPostDeleted }) => {
 
   return (
     <article className="mb-6 bg-surface sm:rounded-2xl sm:border border-border shadow-sm overflow-hidden">
-      {/* Header */}
       <div className="flex items-center justify-between p-4">
         <Link to={`/profile/${post.user._id}`} className="flex items-center gap-3">
           <img
@@ -125,13 +124,9 @@ const PostCard = ({ post, onPostDeleted }) => {
             >
               <MessageCircle className="h-7 w-7 transition-transform duration-200 group-hover:scale-110" />
             </button>
-            <button className="group text-text-primary transition-colors hover:text-text-secondary">
-              <Share className="h-7 w-7 transition-transform duration-200 group-hover:scale-110" />
-            </button>
+            
           </div>
-          <button className="group text-text-primary transition-colors hover:text-text-secondary">
-            <Bookmark className="h-7 w-7 transition-transform duration-200 group-hover:scale-110" />
-          </button>
+         
         </div>
 
         {/* Likes Count */}

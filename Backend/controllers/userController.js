@@ -75,7 +75,7 @@ export const toggleFollow = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, bio } = req.body;
     const userId = req.user._id;
 
     const user = await User.findById(userId);
@@ -85,6 +85,7 @@ export const updateProfile = async (req, res) => {
 
     if (username) user.username = username;
     if (email) user.email = email;
+    if (bio !== undefined) user.bio = bio;
 
     if (password) {
       const bcrypt = await import("bcryptjs");

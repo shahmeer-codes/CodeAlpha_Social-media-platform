@@ -5,7 +5,7 @@ import PostCard from "../components/PostCard";
 import ProfileHeader from "../components/ProfileHeader";
 import { getUserProfile } from "../services/userService";
 import { getUserPosts } from "../services/postService";
-import { Loader2, Grid3X3, Bookmark, UserSquare2 } from "lucide-react";
+import { Loader2, Grid3X3} from "lucide-react";
 import { cn } from "../components/Sidebar";
 
 const Profile = () => {
@@ -72,30 +72,7 @@ const Profile = () => {
           <Grid3X3 className="h-4 w-4" />
           <span className="hidden sm:inline">Posts</span>
         </button>
-        <button 
-          onClick={() => setActiveTab("saved")}
-          className={cn(
-            "flex items-center gap-2 py-4 border-t-2 sm:border-t-0 sm:border-b-2 transition-colors",
-            activeTab === "saved" 
-              ? "text-text-primary border-primary sm:border-text-primary" 
-              : "text-text-muted border-transparent hover:text-text-secondary"
-          )}
-        >
-          <Bookmark className="h-4 w-4" />
-          <span className="hidden sm:inline">Saved</span>
-        </button>
-        <button 
-          onClick={() => setActiveTab("tagged")}
-          className={cn(
-            "flex items-center gap-2 py-4 border-t-2 sm:border-t-0 sm:border-b-2 transition-colors",
-            activeTab === "tagged" 
-              ? "text-text-primary border-primary sm:border-text-primary" 
-              : "text-text-muted border-transparent hover:text-text-secondary"
-          )}
-        >
-          <UserSquare2 className="h-4 w-4" />
-          <span className="hidden sm:inline">Tagged</span>
-        </button>
+        
       </div>
 
       {activeTab === "posts" && (
@@ -110,9 +87,7 @@ const Profile = () => {
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:gap-4 lg:grid-cols-1">
-            {/* We will reuse PostCard for vertical feed, or if it was a true instagram profile it would be a grid. 
-                Let's stick to vertical feed for now to show full posts as per existing functionality, 
-                but we can use grid for desktop if we had a thumbnail. The existing code maps PostCards vertically. */}
+      
             <div className="col-span-3 lg:col-span-1 space-y-6">
               {posts.map((post) => (
                 <PostCard

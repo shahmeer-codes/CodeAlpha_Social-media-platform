@@ -5,7 +5,6 @@ const ProfileHeader = ({ profile, postsCount, onFollowChange }) => {
     <div className="bg-surface sm:rounded-2xl sm:border border-border shadow-sm p-4 sm:p-8">
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-10">
         
-        {/* Avatar */}
         <div className="shrink-0 relative">
           <div className="rounded-full p-1 border-2 border-border">
             <img
@@ -16,7 +15,6 @@ const ProfileHeader = ({ profile, postsCount, onFollowChange }) => {
           </div>
         </div>
 
-        {/* Info & Stats */}
         <div className="flex-1 w-full flex flex-col gap-4 sm:pt-4">
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

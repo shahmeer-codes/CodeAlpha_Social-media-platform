@@ -9,6 +9,7 @@ const Settings = () => {
     username: "",
     email: "",
     password: "",
+    bio: "",
   });
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,7 @@ const Settings = () => {
         username: user.username || "",
         email: user.email || "",
         password: "", // Don't populate password
+        bio: user.bio || "",
       });
     }
   }, [user]);
@@ -50,6 +52,9 @@ const Settings = () => {
       }
       if (formData.email && formData.email !== user.email) {
         submitData.append("email", formData.email);
+      }
+      if (formData.bio !== undefined && formData.bio !== (user.bio || "")) {
+        submitData.append("bio", formData.bio);
       }
       if (formData.password) {
         submitData.append("password", formData.password);
@@ -158,6 +163,20 @@ const Settings = () => {
               onChange={handleChange}
               className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-bold text-text-primary">
+              Bio
+            </label>
+            <textarea
+              name="bio"
+              placeholder="Tell us about yourself"
+              value={formData.bio}
+              onChange={handleChange}
+              rows="3"
+              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+            ></textarea>
           </div>
 
           <div>
