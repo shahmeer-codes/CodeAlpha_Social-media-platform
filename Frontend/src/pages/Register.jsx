@@ -58,9 +58,7 @@ const Register = () => {
       <div className="w-full max-w-sm sm:max-w-md rounded-2xl border-none sm:border sm:border-border bg-transparent sm:bg-surface p-4 sm:p-10 sm:shadow-sm">
         
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-sm">
-            <span className="font-extrabold text-3xl leading-none">S</span>
-          </div>
+          
           <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
             Create an Account
           </h1>

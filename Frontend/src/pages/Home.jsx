@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import CreatePost from "../components/CreatePost";
 import PostCard from "../components/PostCard";
-import { getPosts, deletePost } from "../services/postService";
+import { getPosts, } from "../services/postService";
 import { Loader2, RefreshCw } from "lucide-react";
 
 const Home = () => {

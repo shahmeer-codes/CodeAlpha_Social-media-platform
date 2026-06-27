@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Search, Bell, MessageCircle, Home, Users } from "lucide-react";
-import { cn } from "./Sidebar"; // reuse utility
-
+import {  Home, Info } from "lucide-react";
 const Navbar = () => {
   const { user } = useAuth();
 
@@ -10,16 +8,20 @@ const Navbar = () => {
     <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-border bg-white/80 backdrop-blur-lg">
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         
-        <div className="flex items-center gap-2">
-          <Link to="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
-              <span className="font-bold text-xl leading-none">S</span>
-            </div>
-            <span className="hidden text-xl font-extrabold tracking-tight text-text-primary lg:block">
-              SocialApp
-            </span>
-          </Link>
-        </div>
+        <div className="flex items-center">
+  <Link
+    to="/"
+    className="flex items-center gap-3"
+  >
+    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-white">
+      <span className="text-lg font-semibold text-primary">S</span>
+    </div>
+
+    <span className="hidden text-xl font-semibold tracking-tight text-text-primary lg:block">
+      Shavio
+    </span>
+  </Link>
+</div>
 
         
         <div className="flex items-center gap-2 sm:gap-4">
@@ -27,7 +29,7 @@ const Navbar = () => {
             <Home className="h-6 w-6" />
           </Link>
           <Link to="/About" className="hidden rounded-full p-2 text-text-secondary transition hover:bg-background hover:text-text-primary sm:block">
-            <Users className="h-6 w-6" />
+            <Info className="h-6 w-6" />
           </Link>
           
           
@@ -38,8 +40,8 @@ const Navbar = () => {
             >
               <img
                 src={
-                  user?.profilePicture ||
-                  `https://ui-avatars.com/api/?name=${user?.name}&background=random`
+                  user?.avatar || user?.profilePicture ||
+                  `https://ui-avatars.com/api/?name=${user?.username || user?.name}&background=random`
                 }
                 alt="Profile"
                 className="h-full w-full object-cover"

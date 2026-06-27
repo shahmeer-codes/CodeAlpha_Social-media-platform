@@ -1,51 +1,49 @@
-import { Home, Search, PlusSquare, Heart, User } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Home, User, Info, Settings } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import { useAuth } from "../context/AuthContext";
-import { cn } from "./Sidebar";
+
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
 
 const BottomNav = () => {
   const { user } = useAuth();
-  const location = useLocation();
 
-  const navItems = [
+  const menuItems = [
     { name: "Home", icon: Home, path: "/" },
-    { name: "Explore", icon: Search, path: "/explore" },
-    { name: "Create", icon: PlusSquare, path: "/create" },
-    { name: "Activity", icon: Heart, path: "/notifications" },
     { name: "Profile", icon: User, path: `/profile/${user?._id}` },
+    { name: "About", icon: Info, path: "/about" },
+    { name: "Settings", icon: Settings, path: "/settings" },
   ];
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 border-t border-border bg-white/90 backdrop-blur-lg lg:hidden pb-safe">
-      <nav className="flex justify-around items-center h-16 px-4">
-        {navItems.map((item) => {
+    <footer className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-white lg:hidden">
+      <nav className="flex items-center justify-around py-2">
+        {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive =
-            item.path === "/"
-              ? location.pathname === "/"
-              : location.pathname.startsWith(item.path);
 
           return (
             <NavLink
               key={item.name}
               to={item.path}
-              className={cn(
-                "flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors duration-200",
-                isActive ? "text-primary" : "text-text-secondary hover:text-text-primary"
-              )}
+              className={({ isActive }) =>
+                cn(
+                  "flex flex-col items-center gap-1 px-3 py-2 text-xs font-medium transition-all",
+                  isActive
+                    ? "text-primary"
+                    : "text-text-secondary hover:text-primary"
+                )
+              }
             >
-              <Icon
-                className={cn(
-                  "h-6 w-6 transition-transform duration-200",
-                  isActive && "scale-110"
-                )}
-                strokeWidth={isActive ? 2.5 : 2}
-              />
+              <Icon className="h-6 w-6" />
+              <span>{item.name}</span>
             </NavLink>
           );
         })}
       </nav>
-    </div>
+    </footer>
   );
 };
 

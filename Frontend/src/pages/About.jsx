@@ -1,83 +1,83 @@
-import { Building2, Code2, Users2, ShieldCheck } from "lucide-react";
+import { Users, Globe, Shield } from "lucide-react";
 
 const About = () => {
   return (
-    <div className="w-full max-w-4xl mx-auto pb-8">
-      <div className="mb-6">
-        <h1 className="text-xl font-bold text-text-primary mb-1">About SocialApp</h1>
-        <p className="text-sm text-text-muted">Learn more about our platform and mission.</p>
-      </div>
-
-      <div className="mb-6 rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
-        <p className="text-base leading-relaxed text-text-primary">
-          SocialApp is a modern platform designed to help you connect with professionals and friends globally. We believe in building a transparent, fast, and secure environment for communities to thrive. 
+    <div className="mx-auto max-w-4xl space-y-8 px-4 py-6">
+      {/* Header */}
+      <section>
+        <h1 className="text-3xl font-bold text-text-primary flex justify-center items-center">About Shavio</h1>
+        <div className="flex justify-center items-center">
+            <p className="mt-2 max-w-2xl  text-text-secondary">
+          Shavio is a modern social networking platform designed to make
+          sharing ideas, connecting with people, and discovering communities
+          simple and enjoyable.
         </p>
+        </div>
+        
+      </section>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
-          <div className="flex gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary">
-              <Users2 className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-text-primary">Community First</h3>
-              <p className="mt-1 text-sm text-text-muted">
-                Built to foster engaging discussions and meaningful connections across boundaries.
-              </p>
-            </div>
-          </div>
+      <section className="rounded-2xl border border-border bg-surface p-8">
+        <div className="flex items-start gap-4">
+         
 
-          <div className="flex gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary">
-              <Building2 className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-text-primary">Professional Networking</h3>
-              <p className="mt-1 text-sm text-text-muted">
-                Share your achievements, follow industry leaders, and build your professional brand.
-              </p>
-            </div>
-          </div>
+          <div>
+            <h2 className="text-xl flex justify-center items-center font-semibold text-text-primary">
+              Our Story
+            </h2>
 
-          <div className="flex gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary">
-              <ShieldCheck className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-text-primary">Privacy & Security</h3>
-              <p className="mt-1 text-sm text-text-muted">
-                Your data is protected. We use enterprise-grade security to ensure your privacy.
-              </p>
-            </div>
-          </div>
+            <p className="mt-3 leading-7 text-text-secondary">
+              Shavio was created as a platform where people can share updates,
+              interact through posts, follow other users, and stay connected in
+              a clean and distraction-free environment. The focus is on
+              meaningful interactions rather than unnecessary complexity.
+            </p>
 
-          <div className="flex gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary">
-              <Code2 className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-text-primary">Modern Technology</h3>
-              <p className="mt-1 text-sm text-text-muted">
-                Powered by a robust MERN stack, delivering a lightning-fast experience on any device.
-              </p>
-            </div>
+            <p className="mt-4 leading-7 text-text-secondary">
+              Whether you're sharing everyday moments, discovering new people,
+              or building your online presence, Shavio provides a straightforward
+              and responsive experience across desktop and mobile devices.
+            </p>
           </div>
         </div>
-      </div>
-      
-      <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
-        <h2 className="text-lg font-bold text-text-primary">Developer Information</h2>
-        <p className="mt-2 text-sm leading-relaxed text-text-muted">
-          This platform is constantly evolving. We're a team of passionate engineers committed to delivering the best social experience. For API access, developer documentation, or open source contributions, please visit our developer portal.
-        </p>
-        <div className="mt-6">
-          <button className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-white transition hover:bg-primary-hover">
-            Contact Support
-          </button>
+      </section>
+
+       <section className="grid gap-5 md:grid-cols-3">
+        <div className="rounded-2xl border border-border bg-surface p-6">
+          <Users className="mb-4 h-7 w-7 text-primary" />
+          <h3 className="font-semibold text-text-primary">
+            Connect
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-text-secondary">
+            Follow people, build your network, and stay updated through a
+            personalized feed.
+          </p>
         </div>
-      </div>
+
+        <div className="rounded-2xl border border-border bg-surface p-6">
+          <Globe className="mb-4 h-7 w-7 text-primary" />
+          <h3 className="font-semibold text-text-primary">
+            Share
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-text-secondary">
+            Publish posts, engage through likes and comments, and express your
+            ideas with ease.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-surface p-6">
+          <Shield className="mb-4 h-7 w-7 text-primary" />
+          <h3 className="font-semibold text-text-primary">
+            Privacy
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-text-secondary">
+            User privacy and account security are important parts of the
+            platform's design and development.
+          </p>
+        </div>
+      </section>
+
     </div>
   );
 };
 
 export default About;
-
