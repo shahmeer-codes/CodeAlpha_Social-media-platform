@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,8 +14,10 @@ const Login = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
+    setErrorMsg("");
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -26,37 +29,37 @@ const Login = () => {
 
     try {
       setLoading(true);
-
       const data = await loginUser(formData);
-
       login(data.token, data.user);
-
       navigate("/");
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
+      setErrorMsg(error.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200 px-4">
-      <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-slate-900">
-            Welcome Back
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md rounded-2xl border-none sm:border sm:border-border bg-transparent sm:bg-surface p-4 sm:p-10 sm:shadow-sm">
+        
+        <div className="mb-8 flex flex-col items-center text-center">
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-sm">
+            <span className="font-extrabold text-3xl leading-none">S</span>
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+            Sign in to SocialApp
           </h1>
-          <p className="mt-2 text-slate-500">
-            Sign in to continue to SocialApp
+          <p className="mt-2 text-sm text-text-muted">
+            Welcome back! Please enter your details.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <label className="mb-1.5 block text-sm font-bold text-text-primary">
               Email
             </label>
-
             <input
               type="email"
               name="email"
@@ -64,42 +67,51 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <label className="mb-1.5 block text-sm font-bold text-text-primary">
               Password
             </label>
-
             <input
               type="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
+
+          {errorMsg && (
+            <div className="rounded-xl bg-red-50 p-3 text-sm text-danger">
+              {errorMsg}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white shadow-md transition-all duration-300 hover:scale-[1.02] hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-2 flex w-full items-center justify-center rounded-xl bg-primary py-3 font-bold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-slate-600">
+        <p className="mt-8 text-center text-sm text-text-secondary">
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="font-semibold text-blue-600 hover:underline"
+            className="font-bold text-primary hover:underline"
           >
-            Register
+            Sign up
           </Link>
         </p>
       </div>
@@ -108,3 +120,4 @@ const Login = () => {
 };
 
 export default Login;
+

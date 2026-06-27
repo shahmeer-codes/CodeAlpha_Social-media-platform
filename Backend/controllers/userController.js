@@ -72,3 +72,43 @@ export const toggleFollow = async (req, res) => {
     });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    if (username) user.username = username;
+    if (email) user.email = email;
+
+    if (password) {
+      const bcrypt = await import("bcryptjs");
+      user.password = await bcrypt.default.hash(password, 10);
+    }
+
+    if (req.file) {
+      user.avatar = req.file.path;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        bio: user.bio,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

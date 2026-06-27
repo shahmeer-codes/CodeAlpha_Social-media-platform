@@ -12,7 +12,7 @@ const FollowButton = ({ profileUser, onFollowChange }) => {
     if (!profileUser || !user) return;
 
     const isFollowing = profileUser.followers.some(
-      (follower) => follower._id === user._id
+      (follower) => follower._id === user._id || follower === user._id
     );
 
     setFollowing(isFollowing);
@@ -44,15 +44,16 @@ const FollowButton = ({ profileUser, onFollowChange }) => {
     <button
       onClick={handleFollow}
       disabled={loading}
-      className={`rounded-xl px-6 py-3 text-sm font-semibold shadow-md transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 ${
+      className={`rounded-lg px-6 py-1.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
         following
-          ? "bg-slate-700 text-white hover:bg-slate-800"
-          : "bg-blue-600 text-white hover:bg-blue-700"
+          ? "bg-background text-text-primary border border-border hover:bg-border"
+          : "bg-primary text-white hover:bg-primary-hover border border-transparent"
       }`}
     >
-      {loading ? "Loading..." : following ? "Following" : "Follow"}
+      {loading ? "..." : following ? "Following" : "Follow"}
     </button>
   );
 };
 
 export default FollowButton;
+

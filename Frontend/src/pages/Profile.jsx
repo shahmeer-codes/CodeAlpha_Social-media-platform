@@ -1,147 +1,119 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import FollowButton from "../components/FollowButton";
+import { useQuery } from "@tanstack/react-query";
 import PostCard from "../components/PostCard";
+import ProfileHeader from "../components/ProfileHeader";
 import { getUserProfile } from "../services/userService";
 import { getUserPosts } from "../services/postService";
+import { Loader2, Grid3X3, Bookmark, UserSquare2 } from "lucide-react";
+import { cn } from "../components/Sidebar";
 
 const Profile = () => {
   const { id } = useParams();
+  const [activeTab, setActiveTab] = useState("posts");
 
-  const [profile, setProfile] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: profileData, isLoading: loadingProfile, refetch: refetchProfile } = useQuery({
+    queryKey: ['profile', id],
+    queryFn: () => getUserProfile(id),
+  });
 
-  const fetchProfile = async () => {
-    try {
-      const [profileData, postData] = await Promise.all([
-        getUserProfile(id),
-        getUserPosts(id),
-      ]);
+  const { data: postsData, isLoading: loadingPosts, refetch: refetchPosts } = useQuery({
+    queryKey: ['userPosts', id],
+    queryFn: () => getUserPosts(id),
+  });
 
-      setProfile(profileData.user);
-      setPosts(postData.posts);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+  const profile = profileData?.user;
+  const posts = postsData?.posts || [];
+  const isLoading = loadingProfile || loadingPosts;
+
+  const handlePostDeleted = () => {
+    refetchPosts();
   };
 
-  useEffect(() => {
-    fetchProfile();
-  }, [id]);
-
-  const handlePostDeleted = (postId) => {
-    setPosts((prev) => prev.filter((post) => post._id !== postId));
+  const handleFollowChange = () => {
+    refetchProfile();
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <>
-        <Navbar />
-
-        <div className="flex min-h-screen items-center justify-center bg-slate-100">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-        </div>
-      </>
+      <div className="flex h-64 flex-col items-center justify-center gap-4 text-text-secondary">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
     );
   }
 
   if (!profile) {
     return (
-      <>
-        <Navbar />
-
-        <div className="flex min-h-screen items-center justify-center bg-slate-100">
-          <h2 className="text-2xl font-semibold text-slate-700">
-            User not found
-          </h2>
-        </div>
-      </>
+      <div className="flex h-64 items-center justify-center sm:rounded-2xl sm:border border-border bg-surface text-center shadow-sm">
+        <h2 className="text-xl font-bold text-text-primary">User not found</h2>
+      </div>
     );
   }
 
   return (
-    <>
-      <Navbar />
+    <div className="w-full">
+      <ProfileHeader 
+        profile={profile} 
+        postsCount={posts.length} 
+        onFollowChange={handleFollowChange} 
+      />
 
-      <main className="min-h-screen bg-slate-100">
-        <div className="mx-auto max-w-5xl px-4 py-8">
-          <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
-            <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:justify-between">
-              <div className="flex flex-col items-center gap-5 md:flex-row">
-                <img
-                  src={profile.avatar || "https://placehold.co/150x150"}
-                  alt={profile.username}
-                  className="h-32 w-32 rounded-full border-4 border-blue-100 object-cover shadow"
-                />
+      {/* Tabs */}
+      <div className="flex justify-center gap-12 border-t border-border mt-4 mb-4 text-sm font-bold uppercase tracking-widest sm:border-t-0 sm:mt-8">
+        <button 
+          onClick={() => setActiveTab("posts")}
+          className={cn(
+            "flex items-center gap-2 py-4 border-t-2 sm:border-t-0 sm:border-b-2 transition-colors",
+            activeTab === "posts" 
+              ? "text-text-primary border-primary sm:border-text-primary" 
+              : "text-text-muted border-transparent hover:text-text-secondary"
+          )}
+        >
+          <Grid3X3 className="h-4 w-4" />
+          <span className="hidden sm:inline">Posts</span>
+        </button>
+        <button 
+          onClick={() => setActiveTab("saved")}
+          className={cn(
+            "flex items-center gap-2 py-4 border-t-2 sm:border-t-0 sm:border-b-2 transition-colors",
+            activeTab === "saved" 
+              ? "text-text-primary border-primary sm:border-text-primary" 
+              : "text-text-muted border-transparent hover:text-text-secondary"
+          )}
+        >
+          <Bookmark className="h-4 w-4" />
+          <span className="hidden sm:inline">Saved</span>
+        </button>
+        <button 
+          onClick={() => setActiveTab("tagged")}
+          className={cn(
+            "flex items-center gap-2 py-4 border-t-2 sm:border-t-0 sm:border-b-2 transition-colors",
+            activeTab === "tagged" 
+              ? "text-text-primary border-primary sm:border-text-primary" 
+              : "text-text-muted border-transparent hover:text-text-secondary"
+          )}
+        >
+          <UserSquare2 className="h-4 w-4" />
+          <span className="hidden sm:inline">Tagged</span>
+        </button>
+      </div>
 
-                <div className="text-center md:text-left">
-                  <h1 className="text-3xl font-bold text-slate-900">
-                    {profile.username}
-                  </h1>
-
-                  <p className="mt-2 text-slate-500">
-                    {profile.email}
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap justify-center gap-4 md:justify-start">
-                    <div className="rounded-xl bg-slate-100 px-5 py-3 text-center">
-                      <p className="text-2xl font-bold text-slate-900">
-                        {posts.length}
-                      </p>
-
-                      <p className="text-sm text-slate-500">
-                        Posts
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl bg-slate-100 px-5 py-3 text-center">
-                      <p className="text-2xl font-bold text-slate-900">
-                        {profile.followers.length}
-                      </p>
-
-                      <p className="text-sm text-slate-500">
-                        Followers
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl bg-slate-100 px-5 py-3 text-center">
-                      <p className="text-2xl font-bold text-slate-900">
-                        {profile.following.length}
-                      </p>
-
-                      <p className="text-sm text-slate-500">
-                        Following
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <FollowButton
-                profileUser={profile}
-                onFollowChange={fetchProfile}
-              />
+      {activeTab === "posts" && (
+        posts.length === 0 ? (
+          <div className="flex h-64 flex-col items-center justify-center gap-4 sm:rounded-2xl sm:border border-border bg-surface text-center shadow-sm">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-text-primary">
+              <Grid3X3 className="h-8 w-8 text-text-primary" strokeWidth={1.5} />
+            </div>
+            <div>
+              <h2 className="text-xl font-extrabold text-text-primary">No Posts Yet</h2>
             </div>
           </div>
-
-          {posts.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm">
-              <div className="text-6xl">📷</div>
-
-              <h2 className="mt-4 text-2xl font-semibold text-slate-800">
-                No Posts Yet
-              </h2>
-
-              <p className="mt-2 text-slate-500">
-                This user hasn't shared anything yet.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-8">
+        ) : (
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:gap-4 lg:grid-cols-1">
+            {/* We will reuse PostCard for vertical feed, or if it was a true instagram profile it would be a grid. 
+                Let's stick to vertical feed for now to show full posts as per existing functionality, 
+                but we can use grid for desktop if we had a thumbnail. The existing code maps PostCards vertically. */}
+            <div className="col-span-3 lg:col-span-1 space-y-6">
               {posts.map((post) => (
                 <PostCard
                   key={post._id}
@@ -150,11 +122,19 @@ const Profile = () => {
                 />
               ))}
             </div>
-          )}
+          </div>
+        )
+      )}
+
+      {activeTab !== "posts" && (
+        <div className="flex h-64 flex-col items-center justify-center gap-4 sm:rounded-2xl sm:border border-border bg-surface text-center shadow-sm">
+          <h2 className="text-xl font-extrabold text-text-primary">Coming Soon</h2>
+          <p className="text-text-muted">This tab is currently under development.</p>
         </div>
-      </main>
-    </>
+      )}
+    </div>
   );
 };
 
 export default Profile;
+

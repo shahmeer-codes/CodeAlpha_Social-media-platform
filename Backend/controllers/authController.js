@@ -26,11 +26,17 @@ export const register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    
+    let avatar = "";
+    if (req.file) {
+      avatar = req.file.path;
+    }
 
     const user = await User.create({
       username,
       email,
       password: hashedPassword,
+      avatar,
     });
 
     const token = generateToken(user._id);

@@ -10,3 +10,8 @@ export const toggleFollow = async (userId) => {
   const { data } = await axiosInstance.put(`/users/${userId}/follow`);
   return data;
 };
+
+export const updateUserSettings = async (formData) => {
+  const { data } = await axiosInstance.put("/users/settings", formData);
+  return data;
+};
